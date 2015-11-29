@@ -30,8 +30,9 @@
             <span ng-hide="post.link">
               {{post.title}}
             </span>
+            <br />
             <span>
-              <a href="#/posts/{{post._id}}">Comments</a>
+              <a href="#/posts/{{post._id}}">Comments <span>{{post.comments.length}}</span></a>
             </span>
           </span>
         </div>
