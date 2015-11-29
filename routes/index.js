@@ -1,9 +1,57 @@
 var express = require('express');
 var router = express.Router();
-
+var mongoose = require('mongoose');
+var Post = mongoose.model('Post');
+var Comment = mongoose.model('Comment');
+//route to get all posts
+router.get('/posts', function(req, res, next) {
+    Post.find(function(err, posts){
+        if(err){
+            return next(err);
+        }
+        res.json(posts);
+    });
+});
+//route to post a post!
+router.post('/posts', function(req, res, next) {
+    var post = new Post(req.body);
+    post.save(function(err, post){
+        if(err){
+            return next(err);
+        }
+        res.json(post);
+    });
+});
+//post param
+router.param('post', function(req, res, next, id) {
+    var query = Post.findById(id);
+    query.exec(function (err, post){
+        if (err) {
+            return next(err);
+        }
+        if (!post) {
+            return next(new Error('can\'t find post'));
+        }
+        req.post = post;
+        return next();
+    });
+});
+//get post with param id
+router.get('/posts/:post', function(req, res) {
+    res.json(req.post);
+});
+//post upvote w/ put
+router.put('/posts/:post/upvote', function(req, res, next) {
+    req.post.upvote(function(err, post){
+        if (err) {
+            return next(err);
+        }
+        res.json(post);
+    });
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
 module.exports = router;
