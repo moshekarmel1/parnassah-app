@@ -155,10 +155,10 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, a
         }
         posts.create({
             title: $scope.title,
-            link: $scope.link,
+            postBody: $scope.postBody,
         });
         $scope.title = '';
-        $scope.link = '';
+        $scope.postBody = '';
     };
 
     $scope.incrementUpvotes = function(post) {

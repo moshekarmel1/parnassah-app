@@ -18,7 +18,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Parnassah</a>
+            <a class="navbar-brand" href="#/home">Parnassah</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -47,57 +47,69 @@
           </ol>
           <div class="clearfix"></div>
         </div>
-        
+        <button type="button" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#myModal">
+          <span class="glyphicon glyphicon-plus"></span> Add
+        </button>
         <table class="table forum table-striped">
           <thead>
             <tr>
               <th class="cell-stat text-center">Upvotes</th>
               <th class="cell-stat hidden-xs hidden-sm">Title</th>
-              <th class="cell-stat text-center hidden-xs hidden-sm">Topics</th>
-              <th class="cell-stat text-center hidden-xs hidden-sm">Posts</th>
-              <th class="cell-stat-2x hidden-xs hidden-sm">Last Post</th>
+              <th class="cell-stat text-center hidden-xs hidden-sm">Comments</th>
+              <th class="cell-stat text-center hidden-xs hidden-sm">By</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="post in posts | orderBy:'-upvotes'">
               <td class="text-center"><span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span> {{post.upvotes}}</td>
               <td>
-                <h4><a href="#">{{post.title}}</a><br><small>{{post.link}}</small></h4>
+                <h4><a href="#/posts/{{post._id}}">{{post.title}}</a><br><small>{{post.postBody.substring(0,50) + '...'}}</small></h4>
               </td>
-              <td class="text-center hidden-xs hidden-sm"><a href="#">9 542</a></td>
-              <td class="text-center hidden-xs hidden-sm"><a href="#">89 897</a></td>
-              <td class="hidden-xs hidden-sm">by <a href="#">{{post.author}}</a><a href="#/posts/{{post._id}}">Comments <span>{{post.comments.length}}</span></a></td>
+              <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.comments.length}}</a></td>
+              <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.author}}</a> on {{post.posted | date:'medium'}}</a></td>
             </tr>
           </tbody>
         </table>
 
-        <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
-          <h3>Add a new post</h3>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+              <div class="modal-body">
+                <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
+                  <h3>Add a new post</h3>
 
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+                  </div>
+                  <div class="form-group">
+                    <textarea rows="10" style="height: auto;" type="text" class="form-control" placeholder="Body" ng-model="postBody"></textarea>
+                  </div>
+                  <button id="post" type="submit" class="btn btn-primary">Post</button>
+                </form>
+                <div ng-hide="isLoggedIn()">
+                  <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Link" ng-model="link"></input>
-          </div>
-          <button type="submit" class="btn btn-primary">Post</button>
-        </form>
-        <div ng-hide="isLoggedIn()">
-          <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
         </div>
     </script>
     <script type="text/ng-template" id="/posts.html">
       <div class="page-header">
-        <h3>
-          <a ng-show="post.link" href="{{post.link}}">
-            {{post.title}}
-          </a>
-          <span ng-hide="post.link">
-            {{post.title}}
-          </span>
-        </h3>
+        <h3>{{post.title}}</h3>
       </div>
-
+      <p class="lead">
+        {{post.postBody}}
+      </p>
+      <hr />
       <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
         <span class="glyphicon glyphicon-thumbs-up"
           ng-click="incrementUpvotes(comment)"></span>
