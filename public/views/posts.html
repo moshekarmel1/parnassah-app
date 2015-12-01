@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h3>
+    {{post.title}} <small>by {{post.author}}</small>
+    <div class="btn-group pull-right" ng-show="currentUser()==post.author" role="group" aria-label="">
+      <button type="button" ng-click="toggleEdit()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span><span class="hidden-xs hidden-sm"> Edit</span>
+      </button>
+      <button type="button" ng-click="save()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-ok"></span><span class="hidden-xs hidden-sm"> Save</span>
+      </button>
+    </div>
+  </h3> 
+</div>
+<textarea ng-show="edit" class="form-control" ng-model="updatedVersion" ng-bind="updatedVersion" rows="10">
+  
+</textarea> 
+<p class="lead" ng-hide="edit" ng-bind="post.postBody">
+  <!--{{post.postBody}}-->
+</p>
+<hr />
+<div ng-show="error" class="alert alert-warning alert-dismissible row" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Sorry</strong> {{error.message}}
+</div>
+<div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+  <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+  {{comment.upvotes}} - by {{comment.author}}
+  <span style="font-size:20px; margin-left:10px;">
+    {{comment.body}}
+  </span>
+</div>
+
+<form ng-submit="addComment()" ng-show="isLoggedIn()" style="margin-top:30px;">
+  <h3>Add a new comment</h3>
+
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Comment" ng-model="body"></input>
+  </div>
+  <button type="submit" class="btn btn-primary">Post</button>
+</form>
+<div ng-hide="isLoggedIn()">
+  <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
+</div>

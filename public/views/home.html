@@ -1,0 +1,72 @@
+<div class="page-header page-heading">
+  <h1 class="pull-left">Parnassah</h1>
+  <ol class="nav nav-pills pull-right">
+    <li ng-class="{'active': order=='-posted'}"><a href="#" ng-click="setOrder('-posted')">
+      <span class="glyphicon glyphicon-thumbs-up"></span> Date Posted</a>
+    </li>
+    <li ng-class="{'active': order=='-upvotes'}"><a href="#" ng-click="setOrder('-upvotes')">
+      <span class="glyphicon glyphicon-thumbs-up"></span> Upvotes</a>
+    </li>
+  </ol>
+  <div class="clearfix"></div>
+</div>
+<div ng-show="error" class="alert alert-warning alert-dismissible row" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Sorry</strong> {{error.message}}
+</div>
+<button type="button" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#myModal">
+  <span class="glyphicon glyphicon-plus"></span> Add
+</button>
+<table class="table forum table-striped">
+  <thead>
+    <tr>
+      <th class="cell-stat text-center">Upvotes</th>
+      <th class="cell-stat">Title</th>
+      <th class="cell-stat text-center">Comments</th>
+      <th class="cell-stat text-center hidden-xs hidden-sm">By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="post in posts | orderBy:order">
+      <td class="text-center">
+        <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span> {{post.upvotes}}
+      </td>
+      <td>
+        <h4><a href="#/posts/{{post._id}}">{{post.title}}</a><br><small class="hidden-xs hidden-sm">{{post.postBody.substring(0,50) + '...'}}</small></h4>
+      </td>
+      <td class="text-center"><a href="#">{{post.comments.length}}</a></td>
+      <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.author}}</a> on {{post.posted | date:'medium'}}</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
+          <h3>Add a new post</h3>
+
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+          </div>
+          <div class="form-group">
+            <textarea rows="10" style="height: auto;" type="text" class="form-control" placeholder="Body" ng-model="postBody"></textarea>
+          </div>
+          <button id="post" type="submit" class="btn btn-primary">Post</button>
+        </form>
+        <div ng-hide="isLoggedIn()">
+          <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

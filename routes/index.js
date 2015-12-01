@@ -85,13 +85,29 @@ router.get('/posts/:post', function(req, res, next) {
         res.json(post);
     });
 });
-//post upvote w/ put
-router.put('/posts/:post/upvote', auth, function(req, res, next) {
-    req.post.upvote(function(err, post){
+//route to update post
+router.put('/posts/:post', function(req, res, next) {
+    req.post.postBody = req.body.postBody;
+    req.post.save(function(err, post) {
         if (err) {
             return next(err);
         }
         res.json(post);
+    });
+});
+//post upvote w/ put
+router.put('/posts/:post/upvote', auth, function(req, res, next) {
+    req.post.upvote(req.payload.username, function(err, post){
+        if (err) {
+            return next(err);
+        }
+        if(post === 'ERROR'){
+            res.status(400).json({message: 'You cannot vote on this...'});
+        }else{
+            res.json(post);
+        }
+        
+        
     });
 });
 /*
@@ -131,11 +147,15 @@ router.param('comment', function(req, res, next, id) {
 });
 //post comment upvote
 router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next) {
-    req.comment.upvote(function(err, comment){
+    req.comment.upvote(req.payload.username, function(err, comment){
         if (err) {
             return next(err);
         }
-        res.json(comment);
+        if(comment === 'ERROR'){
+            res.status(400).json({message: 'You cannot vote on this...'});
+        }else{
+            res.json(comment);    
+        }
     });
 });
 

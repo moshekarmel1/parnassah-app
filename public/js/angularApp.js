@@ -19,6 +19,12 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
         });
     };
 
+    o.update = function(id, post) {
+        return $http.put('/posts/' + id, post, {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        });
+    };
+
     o.upvote = function(post) {
         return $http.put('/posts/' + post._id + '/upvote', null, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
@@ -56,7 +62,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     $stateProvider
     .state('home', {
         url: '/home',
-        templateUrl: '/home.html',
+        templateUrl: '/views/home.html',
         controller: 'MainCtrl',
         resolve: {
             postPromise: ['posts', function(posts){
@@ -66,7 +72,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     })
     .state('posts', {
         url: '/posts/{id}',
-        templateUrl: '/posts.html',
+        templateUrl: '/views/posts.html',
         controller: 'PostsCtrl',
         resolve: {
             post: ['$stateParams', 'posts', function($stateParams, posts) {
@@ -76,7 +82,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     })
     .state('login', {
         url: '/login',
-        templateUrl: '/login.html',
+        templateUrl: '/views/login.html',
         controller: 'AuthCtrl',
         onEnter: ['$state', 'auth', function($state, auth){
             if(auth.isLoggedIn()){
@@ -85,15 +91,15 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         }]
     })
     .state('register', {
-    url: '/register',
-    templateUrl: '/register.html',
-    controller: 'AuthCtrl',
-    onEnter: ['$state', 'auth', function($state, auth){
-        if(auth.isLoggedIn()){
-            $state.go('home');
-        }
-        }]
-    });
+        url: '/register',
+        templateUrl: '/views/register.html',
+        controller: 'AuthCtrl',
+        onEnter: ['$state', 'auth', function($state, auth){
+            if(auth.isLoggedIn()){
+                $state.go('home');
+            }
+            }]
+        });
     $urlRouterProvider.otherwise('home');
 }])
 
@@ -149,6 +155,12 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, a
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.posts = posts.posts;
 
+    $scope.order = '-upvotes';
+
+    $scope.setOrder = function (order) {
+        $scope.order = order;
+    };
+
     $scope.addPost = function(){
         if(!$scope.title || $scope.title === '') {
             return;
@@ -162,13 +174,35 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, a
     };
 
     $scope.incrementUpvotes = function(post) {
-        posts.upvote(post);
+        posts.upvote(post).error(function(error){
+            $scope.error = error;
+        });
     };
 }]);
 
 app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth', function($scope, posts, post, auth){
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.post = post;
+    $scope.edit = false;
+    $scope.updatedVersion = post.postBody;
+    $scope.currentUser = auth.currentUser;
+
+
+    $scope.toggleEdit = function(){
+        $scope.edit = !$scope.edit;
+    };
+
+    $scope.save = function(){
+        if($scope.updatedVersion !== $scope.post.postBody){
+            posts.update(post._id, {
+                postBody: $scope.updatedVersion
+            }).success(function(data){
+                $scope.post.postBody = data.postBody;
+                $scope.updatedVersion = data.postBody;
+                $scope.edit = false;
+            });
+        }
+    };
 
     $scope.addComment = function(){
         if($scope.body === '') { return; }
@@ -182,7 +216,9 @@ app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth', function($scope,
     };
 
     $scope.incrementUpvotes = function(comment){
-        posts.upvoteComment(post, comment);
+        posts.upvoteComment(post, comment).error(function(error){
+            $scope.error = error;
+        });
     };
 }]);
 
