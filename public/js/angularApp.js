@@ -1,4 +1,4 @@
-var app = angular.module('parnassah', ['ui.router']);
+var app = angular.module('parnassah', ['ui.router', 'angularMoment']);
 
 app.factory('posts', ['$http', 'auth', function($http, auth){
     var o = {

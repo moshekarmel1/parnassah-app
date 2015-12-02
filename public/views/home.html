@@ -18,7 +18,7 @@
   <span class="glyphicon glyphicon-plus"></span><span class="hidden-xs hidden-sm"> Add</span>
 </button>
 <div ng-hide="isLoggedIn()">
-  <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+  <h5>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h5>
 </div>
 <table class="table forum table-striped">
   <thead>
@@ -38,7 +38,9 @@
         <h4><a href="#/posts/{{post._id}}">{{post.title}}</a><br><small class="hidden-xs hidden-sm">{{post.postBody.substring(0,50) + '...'}}</small></h4>
       </td>
       <td class="text-center"><a href="#">{{post.comments.length}}</a></td>
-      <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.author}}</a> on {{post.posted | date:'medium'}}</a></td>
+      <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.author}}</a> 
+        <span title="{{post.posted | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a'}}" am-time-ago="post.posted"></span>
+      </a></td>
     </tr>
   </tbody>
 </table>
