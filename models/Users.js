@@ -28,7 +28,7 @@ UserSchema.methods.generateJWT = function() {
 		_id: this._id,
 		username: this.username,
 		exp: parseInt(exp.getTime() / 1000),
-	}, 'SECRET');//REPLACE with ENV var
+	}, process.env.SECRET);//REPLACE with ENV var
 };
 
 mongoose.model('User', UserSchema);

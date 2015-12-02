@@ -8,7 +8,7 @@ var User = mongoose.model('User');
 var jwt = require('express-jwt');
 //authentication middleware
 var auth = jwt({
-    secret: 'SECRET', userProperty: 'payload'
+    secret: process.env.SECRET, userProperty: 'payload'
 });
 //route to register new user
 router.post('/register', function(req, res, next){
