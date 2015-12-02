@@ -4,6 +4,7 @@ var CommentSchema = new mongoose.Schema({
     body: String,
     author: String,
     upvotes: {type: Number, default: 0},
+    posted: {type: Date, default: Date.now},
     upvoters: [{type: String}],
     post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
 });

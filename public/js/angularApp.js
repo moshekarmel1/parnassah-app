@@ -51,9 +51,9 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
             headers: {Authorization: 'Bearer ' + auth.getToken()}
         })
         .success(function(data){
-          comment.upvotes += 1;
-    });
-};
+            comment.upvotes += 1;
+        });
+    };
 
     return o;
 }]);
@@ -98,8 +98,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             if(auth.isLoggedIn()){
                 $state.go('home');
             }
-            }]
-        });
+        }]
+    });
     $urlRouterProvider.otherwise('home');
 }])
 
@@ -207,8 +207,7 @@ app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth', function($scope,
     $scope.addComment = function(){
         if($scope.body === '') { return; }
         posts.addComment(post._id, {
-            body: $scope.body,
-            author: 'user',
+            body: $scope.body
         }).success(function(comment) {
             $scope.post.comments.push(comment);
         });

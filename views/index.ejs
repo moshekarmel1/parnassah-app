@@ -68,5 +68,15 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
       <!-- load angular-moment -->
       <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+
+      <script>
+        $(function(){
+          console.log("Hello World");
+          $('#post').click(function(){
+            console.log("closing modal");
+            $('#myModal').modal('hide');
+          });
+        });
+      </script>
   </body>
 </html>

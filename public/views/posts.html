@@ -21,7 +21,8 @@
 <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
   <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
   {{comment.upvotes}} - by {{comment.author}}
-  <span style="font-size:20px; margin-left:10px;">
+    <span title="{{comment.posted | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a'}}" am-time-ago="comment.posted"></span>
+  <span class="word">
     {{comment.body}}
   </span>
 </div>
