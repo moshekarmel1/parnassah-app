@@ -2,21 +2,17 @@
   <h3>
     {{post.title}} <small>by {{post.author}}</small>
     <div class="btn-group pull-right" ng-show="currentUser()==post.author" role="group" aria-label="">
-      <button type="button" ng-click="toggleEdit()" class="btn btn-primary">
+      <button type="button" ng-hide="edit" ng-click="toggleEdit()" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span><span class="hidden-xs hidden-sm"> Edit</span>
       </button>
-      <button type="button" ng-click="save()" class="btn btn-primary">
+      <button type="button" ng-show="edit" ng-click="save()" class="btn btn-primary">
         <span class="glyphicon glyphicon-ok"></span><span class="hidden-xs hidden-sm"> Save</span>
       </button>
     </div>
   </h3> 
 </div>
-<textarea ng-show="edit" class="form-control" ng-model="updatedVersion" ng-bind="updatedVersion" rows="10">
-  
-</textarea> 
-<p class="lead" ng-hide="edit" ng-bind="post.postBody">
-  <!--{{post.postBody}}-->
-</p>
+<textarea ng-show="edit" class="form-control" ng-model="updatedVersion" ng-bind="updatedVersion" rows="10"></textarea> 
+<p class="lead" ng-hide="edit" style="white-space: pre-line" ng-bind="post.postBody"></p>
 <hr />
 <div ng-show="error" class="alert alert-warning alert-dismissible row" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -25,7 +25,9 @@
     <tr>
       <th class="cell-stat text-center"><span class="glyphicon glyphicon-thumbs-up"></span><span class="hidden-xs hidden-sm"> Upvotes</span></th>
       <th class="cell-stat"><span class="glyphicon glyphicon-bullhorn"></span><span class="hidden-xs hidden-sm"> Title</span></th>
-      <th class="cell-stat text-center"><span class="glyphicon glyphicon-comment"></span><span class="hidden-xs hidden-sm"> Comments</span></th>
+      <th class="cell-stat text-center hidden-xs hidden-sm">
+        <span class="glyphicon glyphicon-comment"></span><span class="hidden-xs hidden-sm"> Comments</span>
+      </th>
       <th class="cell-stat text-center hidden-xs hidden-sm">
         <span class="glyphicon glyphicon-user"></span><span class="hidden-xs hidden-sm"> By</span>
       </th>
@@ -39,7 +41,7 @@
       <td>
         <h4><a href="#/posts/{{post._id}}">{{post.title}}</a><br><small class="hidden-xs hidden-sm">{{post.postBody.substring(0,50) + '...'}}</small></h4>
       </td>
-      <td class="text-center"><a href="#">{{post.comments.length}}</a></td>
+      <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.comments.length}}</a></td>
       <td class="text-center hidden-xs hidden-sm"><a href="#">{{post.author}}</a> 
         <span title="{{post.posted | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a'}}" am-time-ago="post.posted"></span>
       </a></td>
@@ -59,7 +61,7 @@
         <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
           <h3>Add a new post</h3>
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+            <input type="text" class="form-control" placeholder="Title" maxlength="50" ng-model="title"></input>
           </div>
           <div class="form-group">
             <textarea rows="10" style="height: auto;" type="text" class="form-control" placeholder="Body" ng-model="postBody"></textarea>

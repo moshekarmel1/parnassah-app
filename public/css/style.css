@@ -20,6 +20,14 @@ body {
   background-color: #f5f5f5;
 }
 
+.overflow{
+	text-overflow: ellipsis; /* will make [...] at the end */
+    width: 100px; /* change to your preferences */
+    max-width: 100px;
+    white-space: nowrap; /* paragraph to one line */
+    overflow:hidden;
+}
+
 .footer p{
 	vertical-align: middle;
 }
