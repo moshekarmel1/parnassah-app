@@ -14,9 +14,12 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>Sorry</strong> {{error.message}}
 </div>
-<button type="button" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#myModal">
-  <span class="glyphicon glyphicon-plus"></span> Add
+<button ng-show="isLoggedIn()" type="button" class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#myModal">
+  <span class="glyphicon glyphicon-plus"></span><span class="hidden-xs hidden-sm"> Add</span>
 </button>
+<div ng-hide="isLoggedIn()">
+  <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+</div>
 <table class="table forum table-striped">
   <thead>
     <tr>
@@ -51,7 +54,6 @@
       <div class="modal-body">
         <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
           <h3>Add a new post</h3>
-
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
           </div>
@@ -60,9 +62,6 @@
           </div>
           <button id="post" type="submit" class="btn btn-primary">Post</button>
         </form>
-        <div ng-hide="isLoggedIn()">
-          <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
