@@ -1,6 +1,6 @@
 var app = angular.module('parnassah', ['ui.router', 'angularMoment']);
 
-app.factory('posts', ['$http', 'auth', function($http, auth){
+/*app.factory('posts', ['$http', 'auth', function($http, auth){
     var o = {
         posts: []
     };
@@ -174,6 +174,7 @@ app.controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, a
     };
 
     $scope.incrementUpvotes = function(post) {
+        if(!auth.isLoggedIn()) return;
         posts.upvote(post).error(function(error){
             $scope.error = error;
         });
@@ -248,3 +249,4 @@ app.controller('NavCtrl', ['$scope', 'auth', function($scope, auth){
     $scope.currentUser = auth.currentUser;
     $scope.logOut = auth.logOut;
 }]);
+*/
