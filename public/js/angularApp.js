@@ -205,7 +205,9 @@ app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth', function($scope,
     };
 
     $scope.addComment = function(){
-        if($scope.body === '') { return; }
+        if($scope.body === '' || !isLoggedIn()) { 
+            return; 
+        }
         posts.addComment(post._id, {
             body: $scope.body
         }).success(function(comment) {
