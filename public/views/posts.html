@@ -1,6 +1,8 @@
 <div class="page-header">
   <h3>
-    {{post.title}} <small>by {{post.author}}</small>
+    {{post.title}} <br/><small>by {{post.author}}
+      <span title="{{post.posted | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a'}}" am-time-ago="post.posted"></span>
+    </small>
     <div class="btn-group pull-right" ng-show="currentUser()==post.author" role="group" aria-label="">
       <button type="button" ng-hide="edit" ng-click="toggleEdit()" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span><span class="hidden-xs hidden-sm"> Edit</span>
@@ -19,10 +21,10 @@
   <strong>Sorry</strong> {{error.message}}
 </div>
 <div class="row">
-  <div class="col-md-6 col-sm-10">
-    <h5>Do you agree with this? <span class="glyphicon glyphicon-thumbs-up" ng-click="upvote(post)"></span> {{post.upvotes}}</h5>
+  <div class="col-md-6 col-sm-6 col-xs-6">
+    <p class="lead">Do you agree with this post? <span class="glyphicon glyphicon-thumbs-up" ng-click="upvote(post)"></span> {{post.upvotes}}</p>
   </div>
-  <div class="col-md-6 col-sm-2">
+  <div class="col-md-6 col-sm-6 col-xs-6">
     <ol class="nav nav-pills pull-right">
       <li ng-class="{'active': order=='-posted'}"><a href="#" ng-click="setOrder('-posted')">
         <span class="glyphicon glyphicon-time"></span><span class="hidden-xs hidden-sm"> Date Posted</span></a>
@@ -33,8 +35,7 @@
     </ol>
   </div>
 </div>
-
-<br />
+<hr />
 <div ng-repeat="comment in post.comments | orderBy:order">
   <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
   {{comment.upvotes}} - by {{comment.author}}
